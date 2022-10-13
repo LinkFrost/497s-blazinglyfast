@@ -10,6 +10,8 @@ Version 0.1
 
 The application is an anonymous feedback collection website where a user can create a room accessible through a unique url that contains either a message board, poll, or both. The user can then share the generated url to as many people as they’d like and have the room expire after a set amount of hours.​ After the room expires, the contents that were recorded throughout its duration are compiled and sent to the owner’s email. The room should be able to support a large number of users at once and update live when new poll responses or messages are sent. Once the room expires, it will no longer accept messages/votes and enter a read only state. This application could be part of a larger idea and extended beyond our implementation.
 
+---
+
 ### Data Model
 
 The application has the following date types:
@@ -31,6 +33,8 @@ Room Visuals: Contains the visualized versions of expired rooms.
 _Below is a diagram for each data model in JSON with examples and how they related to each other._
 
 ![](./data_model.png)
+
+---
 
 ### Services
 
@@ -62,8 +66,255 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 ![](./services.png)
 
+---
+
 ### Endpoints
 
+## Create Room (Rooms Service)
+
+**Route:** /rooms
+
+**Method:** POST
+
+**JSON Body (Example):**
+
+```json
+{
+  userId: "89ashJHSb",
+  title: "Feedback Room",
+  description: "This is to get feedback for my event",
+  type: "poll" || "messages"
+}
+```
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 201
+  "roomId": "sKHJ8bs"
+}
+```
+
+## Create Message (Messages Service)
+
+**Route:** /messages
+
+**Method:** POST
+
+**JSON Body (Example):**
+
+```json
+{
+  "userId": "gGJ09un",
+  "roomId": "098dnlksg",
+  "content": "This is a feedback comment"
+}
+```
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 200
+  "id": "sKHJ8bsd",
+  "content": "This is a feedback comment",
+  "votes": 0,
+  "roomId": "098dnlksg"
+}
+```
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 422
+  "alert": "Comment contains a banned word!"
+}
+```
+
+## Create User (Authenticator Service)
+
+**Route:** /users/signup
+
+**Method:** POST
+
+**JSON Body (Example):**
+
+```json
+{
+  "username": "aimran",
+  "password": "pass1234",
+  "email": "test@gmail.com"
+}
+```
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 201
+  "userId": "8ohdfw0s97",
+  "username": "aimran"
+}
+```
+
+## Login User (Authenticator Service)
+
+**Route:** /users/login
+
+**Method:** POST
+
+**JSON Body (Example):**
+
+```json
+{
+  "username": "aimran",
+  "password": "pass1234"
+}
+```
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 200
+  "session": "89hjkKHJFdd"
+}
+```
+
+## Logout User (Authenticator Service)
+
+**Route:** /users/logout
+
+**Method:** POST
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 200
+  "status": "success" || "error"
+}
+```
+
+## Vote Message (Votes Service)
+
+**Route:** /messages/:messageId
+
+**Method:** PUT
+
+**JSON Body (Example):**
+
+```json
+{
+  "messageId": "aimran",
+  "roomId": "pass1234",
+  "vote": 1
+}
+```
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 200
+  "votes": 3
+}
+```
+
+## Vote Poll (Votes Service)
+
+**Route:** /polls/:pollId
+
+**Method:** PUT
+
+**JSON Body (Example):**
+
+```json
+{
+  "pollId": "aimran",
+  "roomId": "pass1234",
+  "option": "Option A"
+}
+```
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 200
+  "Option A": 74
+}
+```
+
+## Get Room (Query Service)
+
+**Route:** /rooms/:roomId
+
+**Method:** GET
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 200
+  "id": "1aGH85ds",
+  "userId": "98asdfhkj",
+  "title": "Feedback Room",
+  "description": "Feedback for my event!",
+  "createDate": "10-11-2022",
+  "expire": true,
+  "type": "message" || "poll",
+  "data": messages || pollObj
+}
+```
+
+## Get Past Rooms (Query Service)
+
+**Route:** /users/:userId/rooms
+
+**Method:** GET
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 200
+  "pastRooms": [roomObj1, roomObj2, roomObj3]
+}
+```
+
+## Get Visual (Query Service)
+
+**Route:** /rooms/:roomId/visual
+
+**Method:** GET
+
+**JSON Response (Example):**
+
+```json
+{
+  // Status Code: 200
+  "visual": {visualData} // Generated from a library
+}
+```
+
 ### Events and Communication
+
+| Service            | Events Emitted | Events Received | Description |
+| ------------------ | -------------- | --------------- | ----------- |
+| Rooms              |                |                 |             |
+| Messages           |                |                 |             |
+| Polls              |                |                 |             |
+| Users              |                |                 |             |
+| Authetnicator      |                |                 |             |
+| Expiration Checker |                |                 |             |
+| Email              |                |                 |             |
+| Site Health        |                |                 |             |
+| Visualizer         |                |                 |             |
+| Votes              |                |                 |             |
+| Moderator          |                |                 |             |
+| Query              |                |                 |             |
 
 ### Meeting Notes
