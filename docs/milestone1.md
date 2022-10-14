@@ -6,13 +6,13 @@ Version 0.1
 
 ---
 
-### Application Domain
+## Application Domain
 
 The application is an anonymous feedback collection website where a user can create a room accessible through a unique url that contains either a message board, poll, or both. The user can then share the generated url to as many people as they’d like and have the room expire after a set amount of hours.​ After the room expires, the contents that were recorded throughout its duration are compiled and sent to the owner’s email. The room should be able to support a large number of users at once and update live when new poll responses or messages are sent. Once the room expires, it will no longer accept messages/votes and enter a read only state. This application could be part of a larger idea and extended beyond our implementation.
 
 ---
 
-### Data Model
+## Data Model
 
 The application has the following date types:
 
@@ -36,7 +36,7 @@ _Below is a diagram for each data model in JSON with examples and how they relat
 
 ---
 
-### Services
+## Services
 
 **Rooms Service:** The client will communicate with this service to create a new room. The database will keep track of all rooms (expired or not), and only allow new room creation from authenticated users.
 
@@ -68,9 +68,9 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 ---
 
-### Endpoints
+## Endpoints
 
-## Create Room (Rooms Service)
+### Create Room (Rooms Service)
 
 **Route:** /rooms
 
@@ -80,23 +80,26 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 ```json
 {
-  userId: "89ashJHSb",
-  title: "Feedback Room",
-  description: "This is to get feedback for my event",
-  type: "poll" || "messages"
+  "userId": "89ashJHSb",
+  "title": "Feedback Room",
+  "description": "This is to get feedback for my event",
+  "type": "< poll / message >"
 }
 ```
 
+The type can be poll or message.
+
 **JSON Response (Example):**
+
+Status Code: **201**
 
 ```json
 {
-  // Status Code: 201
   "roomId": "sKHJ8bs"
 }
 ```
 
-## Create Message (Messages Service)
+### Create Message (Messages Service)
 
 **Route:** /messages
 
@@ -114,9 +117,10 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **200**
+
 ```json
 {
-  // Status Code: 200
   "id": "sKHJ8bsd",
   "content": "This is a feedback comment",
   "votes": 0,
@@ -126,14 +130,15 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **422**
+
 ```json
 {
-  // Status Code: 422
   "alert": "Comment contains a banned word!"
 }
 ```
 
-## Create User (Authenticator Service)
+### Create User (Authenticator Service)
 
 **Route:** /users/signup
 
@@ -151,15 +156,16 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **201**
+
 ```json
 {
-  // Status Code: 201
   "userId": "8ohdfw0s97",
   "username": "aimran"
 }
 ```
 
-## Login User (Authenticator Service)
+### Login User (Authenticator Service)
 
 **Route:** /users/login
 
@@ -176,14 +182,15 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **200**
+
 ```json
 {
-  // Status Code: 200
   "session": "89hjkKHJFdd"
 }
 ```
 
-## Logout User (Authenticator Service)
+### Logout User (Authenticator Service)
 
 **Route:** /users/logout
 
@@ -191,14 +198,15 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **200**
+
 ```json
 {
-  // Status Code: 200
-  "status": "success" || "error"
+  "status": "< success / error >"
 }
 ```
 
-## Vote Message (Votes Service)
+### Vote Message (Votes Service)
 
 **Route:** /messages/:messageId
 
@@ -216,14 +224,15 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **200**
+
 ```json
 {
-  // Status Code: 200
   "votes": 3
 }
 ```
 
-## Vote Poll (Votes Service)
+### Vote Poll (Votes Service)
 
 **Route:** /polls/:pollId
 
@@ -241,14 +250,15 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **200**
+
 ```json
 {
-  // Status Code: 200
   "Option A": 74
 }
 ```
 
-## Get Room (Query Service)
+### Get Room (Query Service)
 
 **Route:** /rooms/:roomId
 
@@ -256,21 +266,22 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **200**
+
 ```json
 {
-  // Status Code: 200
   "id": "1aGH85ds",
   "userId": "98asdfhkj",
   "title": "Feedback Room",
   "description": "Feedback for my event!",
   "createDate": "10-11-2022",
   "expire": true,
-  "type": "message" || "poll",
-  "data": messages || pollObj
+  "type": "< message / poll >"
+  "data": ["< messages / polls >"]
 }
 ```
 
-## Get Past Rooms (Query Service)
+### Get Past Rooms (Query Service)
 
 **Route:** /users/:userId/rooms
 
@@ -278,14 +289,15 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **200**
+
 ```json
 {
-  // Status Code: 200
-  "pastRooms": [roomObj1, roomObj2, roomObj3]
+  "pastRooms": ["roomObj1", "roomObj2", "roomObj3"]
 }
 ```
 
-## Get Visual (Query Service)
+### Get Visual (Query Service)
 
 **Route:** /rooms/:roomId/visual
 
@@ -293,28 +305,28 @@ _Below is a diagram showing all of the services and how they interact with the e
 
 **JSON Response (Example):**
 
+Status Code: **200**
+Generated from a library
+
 ```json
 {
-  // Status Code: 200
-  "visual": {visualData} // Generated from a library
+  "visual": {"visualData"}
 }
 ```
 
-### Events and Communication
+## Events and Communication
 
-| Service            | Events Emitted | Events Received | Description |
-| ------------------ | -------------- | --------------- | ----------- |
-| Rooms              |                |                 |             |
-| Messages           |                |                 |             |
-| Polls              |                |                 |             |
-| Users              |                |                 |             |
-| Authetnicator      |                |                 |             |
-| Expiration Checker |                |                 |             |
-| Email              |                |                 |             |
-| Site Health        |                |                 |             |
-| Visualizer         |                |                 |             |
-| Votes              |                |                 |             |
-| Moderator          |                |                 |             |
-| Query              |                |                 |             |
-
-### Meeting Notes
+| Service            | Events Emitted                                  | Events Received                                                                                    | Description |
+| ------------------ | ----------------------------------------------- | -------------------------------------------------------------------------------------------------- | ----------- |
+| Rooms              | `"type": "RoomCreated"` `"type": "PollCreated"` | RoomExpired                                                                                        | w           |
+| Messages           | MessageCreated                                  | MessageVoted, MessageModerated                                                                     | w           |
+| Polls              | None                                            | PollCreated, PollVoted                                                                             | w           |
+| Users              | UserCreated                                     | None                                                                                               | w           |
+| Authenticator      | UserCreated                                     | None                                                                                               | w           |
+| Expiration Checker | RoomExpired                                     | RoomCreated                                                                                        | w           |
+| Email              | None                                            | RoomVisualized                                                                                     | w           |
+| Site Health        | None                                            | RoomExpired, RoomCreated, MessageModerated, UserCreated, PollVoted, MessageVoted, RequestReceived? | w           |
+| Visualizer         | RoomVisualized                                  | RoomExpired                                                                                        | w           |
+| Votes              | PollVoted, MessageVoted                         | None                                                                                               | w           |
+| Moderator          | MessageModerated                                | MessageCreated                                                                                     | w           |
+| Query              | None                                            | RoomCreated, PollCreated, PollVoted, MessageVoted, RoomExpired, RoomVisualized, MessageModerated   | w           |
