@@ -58,7 +58,7 @@ The application has the following date types:
 
 _Below is a diagram for each data model in JSON with examples and how they related to each other._
 
-![](./data_model.png)
+![](./img/data_model.png)
 
 ---
 
@@ -114,9 +114,9 @@ _Below is a diagram for each data model in JSON with examples and how they relat
 
 _Below is a diagram showing all of the services and how they interact with the event bus and client. We've also included a mockup of what the frontend webpages might look like._
 
-![](./services.png)
+![](./img/services.png)
 
-![](./views.png)
+![](./img/views.png)
 
 ---
 
@@ -413,10 +413,10 @@ Generated from a library
 - Jack
 
 **Topics Discussed:**
-We discussed overall project ideas, architecture concepts, and organization/work splitting. We first discussed all of our ideas which we had brainstormed prior at [https://497-idea-sheet.vercel.app/](). We decided on making an anonymous link feedback website, where users can create a room that allows anyone with the link to make posts. We whiteboard our ideas and started working on this doc to get our ideas down. We have taken pictures, attached below. Brainstorm can also be found at [https://497-idea-sheet.vercel.app/anonymous-feedback-links]().
+We discussed overall project ideas, architecture concepts, and organization/work splitting. We first discussed all of our ideas which we had brainstormed prior at [https://497-idea-sheet.vercel.app/](https://497-idea-sheet.vercel.app/). We decided on making an anonymous link feedback website, where users can create a room that allows anyone with the link to make posts. We whiteboard our ideas and started working on this doc to get our ideas down. We have taken pictures, attached below. Brainstorm can also be found at [https://497-idea-sheet.vercel.app/anonymous-feedback-links](https://497-idea-sheet.vercel.app/anonymous-feedback-links).
 
-![](./meeting1_1.JPG)
-![](./meeting1_2.JPG)
+![](./img/meeting1_1.JPG)
+![](./img/meeting1_2.JPG)
 
 ### Meeting 2 Notes: 10/12/22
 
